@@ -70,8 +70,12 @@ class MakeServiceCommand extends Command
     {
         $name = $this->getSingularClassName($this->argument('name'));
 
+        $words = explode("/", $name);
+        array_splice($words, -1);
+        $namespace = implode("\\", $words);
+
         return [
-            'NAMESPACE'         => 'App\\Services\\'.str_replace('/', '\\', $name),
+            'NAMESPACE'         => 'App\\Services\\'.$namespace,
             'CLASS_NAME'        => array_values(array_slice(explode('/', $name), -1))[0],
         ];
     }

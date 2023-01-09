@@ -49,5 +49,7 @@ Route::prefix('admin')->group(function () {
         Route::controller(DashboardController::class)->group(function () {
             Route::get('/dashboard', 'index')->name('dashboard.index');
         });
+
+        require __DIR__ . '/admin/settings.php';
     });
 });

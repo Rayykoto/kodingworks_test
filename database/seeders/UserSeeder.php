@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -15,6 +16,24 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
+        $super_admin = User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@boilerplate.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('rahasia123')
+        ]);
+        $super_admin->assignRole('super admin');
+        
+        for ($i=0; $i < 10 ; $i++) {
+            $user = User::create([
+                'name' => fake()->name(),
+                'email' => fake()->unique()->safeEmail(),
+                'email_verified_at' => now(),
+                'password' => Hash::make('rahasia123'),
+                'remember_token' => Str::random(10),
+            ]);
+
+            $user->assignRole('user');
+        }
     }
 }

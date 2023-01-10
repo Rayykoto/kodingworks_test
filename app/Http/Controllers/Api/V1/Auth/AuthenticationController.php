@@ -26,7 +26,7 @@ class AuthenticationController extends ApiBaseController
             $data = $this->authenticationService->login($request);
 
             $user = new AuthenticationResource($data, "Success Login");
-            event(new Login(auth('api')->user(), $request->only(['email', 'password']), $user));
+            event(new Login(auth('api')->user(), [], [], $request->only(['email', 'password']), $user));
             
             return $this->respond($user);
         } catch (\Exception $e) {

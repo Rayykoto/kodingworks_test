@@ -15,11 +15,13 @@ class Logout
      *
      * @return void
      */
-    public function __construct($user, $new_permissions = [], $old_permissions = [])
+    public function __construct($user, $new_permissions = [], $old_permissions = [], $request = [], $response = [])
     {
         $this->user = $user;
         $this->new_permissions = $new_permissions;
         $this->old_permissions = $old_permissions;
+        $this->request = $request;
+        $this->response = $response;
     }
 
     /**

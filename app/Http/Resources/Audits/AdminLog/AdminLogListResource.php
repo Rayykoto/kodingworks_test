@@ -36,6 +36,8 @@ class AdminLogListResource extends ResourceCollection
             'platform' => $data->platform,
             'old_values' => $data->old_values,
             'new_values' => $data->new_values,
+            'request' => json_decode($data->request),
+            'response' => json_decode($data->response),
             'status_code' => $data->status_code,
             'url' => $data->url,
             'ip_address' => $data->ip_address,

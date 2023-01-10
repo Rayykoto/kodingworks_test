@@ -61,11 +61,11 @@ const emit = defineEmits(['close', 'successSubmit'])
                     </div>
                     <div class="col-span-2">
                         <div class="font-medium text-sm text-slate-600 mb-1">Request</div>
-                        <pre class="font-normal text-sm text-slate-500 bg-neutral-900 !text-white p-2 rounded-md w-full overflow-scroll">{{ data.old_values }}</pre>
+                        <pre class="font-normal text-sm text-slate-500 bg-neutral-900 !text-white p-2 rounded-md w-full overflow-scroll">{{ data.request }}</pre>
                     </div>
                     <div class="col-span-2">
                         <div class="font-medium text-sm text-slate-600 mb-1">Response</div>
-                        <pre class="font-normal text-sm text-slate-500 bg-neutral-900 !text-white p-2 rounded-md w-full overflow-scroll">{{ data.new_values }}</pre>
+                        <pre class="font-normal text-sm text-slate-500 bg-neutral-900 !text-white p-2 rounded-md w-full overflow-scroll">{{ data.response }}</pre>
                     </div>
                 </div>
             </section>

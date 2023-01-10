@@ -32,6 +32,8 @@ class AuthenticationEventSubscriber
         $user->isCustomEvent = true;
         $user->auditCustomOld = $event->old_permissions;
         $user->auditCustomNew = $event->new_permissions;
+        $user->request = $event->request;
+        $user->response = $event->response;
 
         Event::dispatch(AuditCustom::class, [$user]);
     }
@@ -43,6 +45,8 @@ class AuthenticationEventSubscriber
         $user->isCustomEvent = true;
         $user->auditCustomOld = $event->old_permissions;
         $user->auditCustomNew = $event->new_permissions;
+        $user->request = $event->request;
+        $user->response = $event->response;
 
         Event::dispatch(AuditCustom::class, [$user]);
     }

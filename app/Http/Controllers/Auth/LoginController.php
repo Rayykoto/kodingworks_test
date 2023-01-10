@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Events\Authentication\Login;
 use App\Http\Controllers\Controller;
+use App\Events\Authentication\Logout;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -67,6 +69,8 @@ class LoginController extends Controller
                 ], 403);
             }
 
+            event(new Login(auth()->user()));
+
             /*Initialization Access Module*/
             return response()->json([
                 "status" => 200,
@@ -79,5 +83,25 @@ class LoginController extends Controller
             "status" => 422,
             "message" => "Whoops! Login Error Occurred, Check Your Username And Password Again",
         ], 422);
+    }
+
+    public function logout(Request $request)
+    {
+        event(new Logout(auth()->user()));
+
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        if ($response = $this->loggedOut($request)) {
+            return $response;
+        }
+
+        return response()->json([
+            "status" => 200,
+            "message" => "Success",
+        ], 200);
     }
 }

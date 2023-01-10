@@ -3,7 +3,8 @@
 namespace App\Services\Settings\Systems;
 
 use App\Models\Role;
-use App\Models\RoleHasPermission;
+use App\Events\Role\RoleCreated;
+use App\Events\Role\RoleUpdated;
 use Spatie\Permission\Models\Permission;
 
 class RoleManagementService
@@ -38,8 +39,8 @@ class RoleManagementService
 
     public function getRoleHasPermissions($id)
     {
-        $roleHasPermissions = RoleHasPermission::where('role_id', $id)->get()->pluck('permission_id');
-        return $roleHasPermissions;
+        $role = Role::findOrFail($id);
+        return $role->getAllPermissions()->pluck('id');
     }
 
     public function storeData($request)
@@ -52,14 +53,12 @@ class RoleManagementService
 
         // Assign Permission To a New Role
         $permissions = collect($request->permissions)->where('status', true)->all();
+        $role->syncPermissions($permissions);
 
-        foreach ($permissions as $permission) {
-            RoleHasPermission::create([
-                'role_id' => $role->id,
-                'permission_id' => $permission['id']
-            ]);
-        }
-
+        // Call the created role event
+        $new_permissions = Permission::whereIn('id', collect($permissions)->pluck('id'))->get()->pluck('name');
+        event(new RoleCreated($role, $new_permissions));
+        
         return true;
     }
 
@@ -70,17 +69,15 @@ class RoleManagementService
         $role->update([
             'name' => $request->role_name
         ]);
+        $old_permissions = $role->getAllPermissions()->pluck('name');
 
-        // Delete All Permission in Selected Role and Create a new One
+        // Sync New Permissions
         $permissions = collect($request->permissions)->where('status', true)->all();
+        $role->syncPermissions($permissions);
 
-        RoleHasPermission::where('role_id', $id)->delete();
-        foreach ($permissions as $permission) {
-            RoleHasPermission::create([
-                'role_id' => $id,
-                'permission_id' => $permission['id']
-            ]);
-        }
+        // Call the created role event
+        $new_permissions = Permission::whereIn('id', collect($permissions)->pluck('id'))->get()->pluck('name');
+        event(new RoleUpdated($role, $new_permissions, $old_permissions));
 
         return true;
     }

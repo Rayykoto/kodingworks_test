@@ -14,7 +14,6 @@ const userRole = computed(() => usePage().props.value.admin_role)
 
 const logoutSubmit = async () => {
     axios.post(route('logout')).then((res) => {
-        console.log(res)
         window.location.reload()
     }).catch((res) => {
         notify({

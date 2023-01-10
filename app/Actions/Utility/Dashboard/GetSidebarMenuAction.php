@@ -18,6 +18,24 @@ class GetSidebarMenuAction
                 'can'  => 'view_general_dashboard'
             ],
             [
+                'text' => 'Audit Trails',
+                'icon' => 'VEmployee',
+                'group' => true,
+                'can'  => ['view_admin_logs'],
+                'submenu' => [
+                    [
+                        'text' => 'Admin Logs',
+                        'url'  => route('audits.admin-logs.index'),
+                        'can'  => 'view_admin_logs',
+                    ],
+                    [
+                        'text' => 'Api Logs',
+                        'url'  => route('audits.api-logs.index'),
+                        'can'  => 'view_admin_logs',
+                    ]
+                ],
+            ],
+            [
                 'text' => 'Settings',
                 'icon' => 'VSetting',
                 'group' => true,

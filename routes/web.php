@@ -51,5 +51,6 @@ Route::prefix('admin')->group(function () {
         });
 
         require __DIR__ . '/admin/settings.php';
+        require __DIR__ . '/admin/audits.php';
     });
 });

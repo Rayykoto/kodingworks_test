@@ -6,17 +6,20 @@ export default {
     layout: AppLayout,
 
     props: {
+        permissions: Array,
         role: Object
     },
 
     setup(props) {
             const form = reactive({
                 name: props.role.name,
+                permissions: props.role.permissions.map(obj => obj.name)
             });
 
             const update = () => {
                 Inertia.put(`/admin/roles/${props.role.id}`, {
                     name: form.name,
+                    permissions: form.permissions
                 });
             }
             
@@ -45,7 +48,18 @@ export default {
                             class="w-full p-5 mt-2 placeholder-gray-600 bg-gray-200 border border-gray-200 rounded shadow-sm appearance-none h-7 focus:outline-none focus:placeholder-gray-600 focus:bg-white focus-within:text-gray-600"
                             placeholder="Nama Lengkap">
                     </div>
-                    <div>
+
+                    <hr>
+                        <div class="mb-3">
+                                <label class="flex items-center space-x-2">Permissions</label>
+                                <br>
+                                <div v-for="(permission, index) in permissions" :key="index">
+                                    <input type="checkbox" class="w-5 h-5 text-indigo-600 form-checkbox" v-model="form.permissions" :value="permission.name" :id="`check-${permission.id}`">
+                                    <label class="text-gray-700" :for="`check-${permission.id}`">{{ permission.name }}</label>
+                                </div>
+                            </div>
+                        <div>
+                        
                         <button
                             class="inline-block w-full px-3 py-1 text-xl text-white bg-gray-700 rounded-md shadow-md focus:outline-none focus:bg-gray-900">Update
                         </button>

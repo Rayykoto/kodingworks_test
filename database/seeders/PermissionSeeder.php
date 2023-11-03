@@ -61,6 +61,36 @@ class PermissionSeeder extends Seeder
                         ]
                     ]
                 ]
+            ],
+            //roles
+            [
+                'group' => 'settings_roles',
+                'sub_group' => [
+                    [
+                        'name' => 'view_role',
+                        'permission' => [
+                            [
+                                'name' => 'view_role_management',
+                                'label' => 'View Roles Management'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            // tasks
+            [
+                'group' => 'settings_tasks',
+                'sub_group' => [
+                    [
+                        'name' => 'view_task',
+                        'permission' => [
+                            [
+                                'name' => 'view_task_management',
+                                'label' => 'View Tasks Management'
+                            ]
+                        ]
+                    ]
+                ]
             ]
         ];
 

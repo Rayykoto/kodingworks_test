@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -28,7 +29,11 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return Inertia::render('admin/role/create');
+        $permissions = Permission::all();
+        // dd($permissions);
+        return Inertia::render('admin/role/create', [
+            'permissions' => $permissions
+        ]);
     }
 
     /**
@@ -39,11 +44,13 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        Role::create([
+        $role = Role::create([
             'name' => $request->name,
             'guard_name' => 'web',
             'is_default' => 1
         ]);
+
+        $role->givePermissionTo($request->permissions);
 
         return redirect()->route('roles.index');
     }
@@ -67,9 +74,11 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::where('id', $id)->first();
+        $permissions = Permission::all();
+        $role = Role::with('permissions')->where('id', $id)->first();
 
         return Inertia::render('admin/role/edit', [
+            'permissions' => $permissions,
             'role' => $role
         ]);
     }

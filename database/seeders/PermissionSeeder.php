@@ -27,7 +27,7 @@ class PermissionSeeder extends Seeder
                                 'label' => 'View Dashboard Overview',
                             ]
                         ]
-                    ]
+                    ],
                 ]
             ],
 
@@ -46,6 +46,22 @@ class PermissionSeeder extends Seeder
                     ]
                 ]
             ],
+
+            // Users
+            [
+                'group' => 'settings_users',
+                'sub_group' => [
+                    [
+                        'name' => 'view_user',
+                        'permission' => [
+                            [
+                                'name' => 'view_user_management',
+                                'label' => 'View Users Management'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
         ];
 
         // Create permissions 

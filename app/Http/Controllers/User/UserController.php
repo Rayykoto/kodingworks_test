@@ -100,14 +100,14 @@ class UserController extends Controller
                 'name'      => $request->name,
                 'email'       => $request->email
             ]);
-            return redirect()->route('user.index');
+            return redirect()->route('users.index');
         } else {
             $user->update([
                 'name'  => $request->name,
                 'email'  => $request->email,
                 'password'  => bcrypt($request->password)
             ]);
-            return redirect()->route('user.index');
+            return redirect()->route('users.index');
         }
     }
 
@@ -122,7 +122,7 @@ class UserController extends Controller
         $user = User::where('id', $id)->first();
         if (auth()->user()->id != $user->id) {
             $user->delete();
-            return redirect()->route('user.index')->with('success', 'Data has been deleted..');
+            return redirect()->route('users.index')->with('success', 'Data has been deleted..');
         } else {
             $this->authorize('delete', $user);
         }

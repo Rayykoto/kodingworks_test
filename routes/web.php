@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Role\RoleController;
 use App\Http\Controllers\User\UserController;
 use App\Models\User;
 
@@ -51,6 +52,7 @@ Route::prefix('admin')->group(function () {
         Route::controller(DashboardController::class)->group(function () {
             Route::get('/dashboard', 'index')->name('dashboard.index');
             Route::resource('/users', UserController::class);
+            Route::resource('/roles', RoleController::class);
         });
 
         require __DIR__ . '/admin/settings.php';

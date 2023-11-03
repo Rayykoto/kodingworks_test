@@ -18,7 +18,7 @@ export default {
             });
 
             const update = () => {
-                Inertia.put(`/admin/user/${props.user.id}`, {
+                Inertia.put(`/admin/users/${props.user.id}`, {
                     name: form.name,
                     email: form.email,
                     password: form.password,

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Auth\AuthenticationController;
@@ -15,6 +16,16 @@ use App\Http\Controllers\Api\V1\Auth\ForgotPasswordController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::prefix('auth')->group(function () {
+    //route login api
+    Route::post('/login', [LoginController::class, 'login', ['as' => 'auth']]);
+    Route::post('/logout', [LoginController::class, 'logout', ['as' => 'auth']]);
+});
+Route::group(['middleware' => 'auth:api_admin'], function () {
+    Route::apiResource('/tasks', App\Http\Controllers\Api\Task\TaskController::class, ['except' => ['create', 'edit'], 'as' => 'auth']);
+});
+
 
 Route::group(['prefix' => 'v1'], function () {
     Route::prefix('authentication')->group(function () {

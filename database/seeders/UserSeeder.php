@@ -23,8 +23,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('rahasia123')
         ]);
         $super_admin->assignRole('super admin');
-        
-        for ($i=0; $i < 10 ; $i++) {
+
+        for ($i = 0; $i < 10; $i++) {
             $user = User::create([
                 'name' => fake()->name(),
                 'email' => fake()->unique()->safeEmail(),

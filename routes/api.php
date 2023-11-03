@@ -21,7 +21,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::controller(ForgotPasswordController::class)->group(function () {
             Route::post('/password/email', 'sendResetLinkEmail');
         });
-        Route::post('/password/reset', 'ResetPasswordController@reset')->name('api.reset.password');
+        // Route::post('/password/reset', 'ResetPasswordController@reset')->name('api.reset.password');
 
         Route::controller(AuthenticationController::class)->group(function () {
             Route::post('login', 'login');

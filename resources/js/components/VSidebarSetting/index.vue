@@ -55,12 +55,12 @@ const getUrlPathName = (route) => {
 
 <template>
     <div
-        class="flex flex-nowrap overflow-x-scroll no-scrollbar md:block md:overflow-auto px-3 py-6 border-b md:border-b-0 md:border-r border-slate-200 min-w-60 md:space-y-3">
+        class="flex px-3 py-6 overflow-x-scroll border-b flex-nowrap no-scrollbar md:block md:overflow-auto md:border-b-0 md:border-r border-slate-200 min-w-60 md:space-y-3">
         <div>
-            <ul class="flex flex-nowrap md:block mr-3 md:mr-0">
+            <ul class="flex mr-3 flex-nowrap md:block md:mr-0">
                 <div v-for="(route, index) in module" :key="index">
                     <div v-if="route.header" class="mb-4">
-                        <li class="last:mb-0 rounded">
+                        <li class="rounded last:mb-0">
                             <span class="text-sm font-semibold text-slate-500">{{ route.text }}</span>
                         </li>
                     </div>
@@ -70,7 +70,7 @@ const getUrlPathName = (route) => {
                             :class="$page.url.split('/')[4] === getUrlPathName(route.url).split('/')[4] && 'bg-indigo-50'">
                             <component :is="icons[route.icon]"
                                 :isActive="$page.url.split('/')[4] === getUrlPathName(route.url).split('/')[4]" />
-                            <span class="text-sm font-medium text-slate-600 ml-4"
+                            <span class="ml-4 text-sm font-medium text-slate-600"
                                 :class="$page.url.split('/')[4] === getUrlPathName(route.url).split('/')[4] ? 'text-blue-500' : 'hover:text-slate-700'">{{
                                         route.text
                                 }}</span>

@@ -5,6 +5,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\User\UserController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +32,7 @@ Route::prefix('admin')->group(function () {
             Route::post('logout', 'logout')->name('logout');
         });
     });
-    
+
     Route::controller(ResetPasswordController::class)->group(function () {
         Route::get('password/reset/{token}', 'showResetForm')->name('showResetForm');
         Route::post('password/reset', 'reset')->name('resetpassword');
@@ -48,6 +50,7 @@ Route::prefix('admin')->group(function () {
 
         Route::controller(DashboardController::class)->group(function () {
             Route::get('/dashboard', 'index')->name('dashboard.index');
+            Route::resource('/users', UserController::class);
         });
 
         require __DIR__ . '/admin/settings.php';

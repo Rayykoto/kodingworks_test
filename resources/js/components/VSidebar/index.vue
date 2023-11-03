@@ -73,24 +73,24 @@ watch(sidebarExpanded, () => {
 <template>
     <div>
         <!-- Sidebar backdrop (mobile only) -->
-        <div class="fixed inset-0 bg-slate-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200"
+        <div class="fixed inset-0 z-40 transition-opacity duration-200 bg-slate-900 bg-opacity-30 lg:hidden lg:z-auto"
             :class="sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'" aria-hidden="true" />
         <!-- Sidebar -->
         <div id="sidebar" ref="sidebar"
             class="flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 transform h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar w-60 lg:w-[72px] lg:sidebar-expanded:!w-60 shrink-0 bg-slate-800 p-4 transition-all duration-200 ease-in-out"
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-64'">
             <!-- Sidebar header -->
-            <div class="mb-4 w-full">
+            <div class="w-full mb-4">
                 <!-- Close button -->
-                <div class="flex w-full sidebar-expanded:justify-between justify-end">
+                <div class="flex justify-end w-full sidebar-expanded:justify-between">
                     <Link :class="sidebarExpanded || sidebarOpen ?  'block' : 'hidden'" class="pl-2 transition-all duration-200" href="/">
                         <div class="flex justify-start w-full">
                             <img class="w-8 h-8 rounded-full" src="/img/laravel-icon.svg" alt="Company Logo" />
-                            <div class="ml-2 my-auto text-white font-bold text-lg">Boilerplate</div>
+                            <div class="my-auto ml-2 text-lg font-bold text-white">Boilerplate</div>
                         </div>
                     </Link>
                     <div @click.prevent="sidebarExpanded = !sidebarExpanded" :class="!sidebarExpanded ? 'mx-1' : ''"
-                        class="cursor-pointer hidden lg:block lg:justify-end transition-all duration-200">
+                        class="hidden transition-all duration-200 cursor-pointer lg:block lg:justify-end">
                         <VHamburgerHalf v-if="sidebarExpanded" />
                         <VHamburgerFull v-else />
                     </div>
@@ -108,14 +108,14 @@ watch(sidebarExpanded, () => {
                             <li class="rounded mb-[18px] last:mb-0"
                                 :class="$page.url.split('/')[2] === getUrlPathName(route.url).split('/')[2] && 'bg-slate-900'">
                                 <a
-                                    class="block rounded text-slate-200 hover:text-white truncate transition duration-150 p-2">
+                                    class="block p-2 truncate transition duration-150 rounded text-slate-200 hover:text-white">
                                     <div class="flex items-center justify-between">
-                                        <div class="grow flex items-center">
+                                        <div class="flex items-center grow">
                                             <component :is="icons[route.icon]"
                                                 :isActive="$page.url.split('/')[2] === getUrlPathName(route.url).split('/')[2]">
                                             </component>
                                             <span
-                                                class="text-sm font-medium ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 duration-200">{{
+                                                class="ml-2 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100">{{
                                                 route.text }}</span>
                                         </div>
                                     </div>
@@ -125,7 +125,7 @@ watch(sidebarExpanded, () => {
                             <VSidebarGroup v-else ref="sideBar" v-slot="parentLink"
                                 :activeCondition="$page.url.split('/')[2] === getUrlPathName(route.submenu[0].url).split('/')[2]"
                                 class="cursor-pointer">
-                                <a class="block text-slate-200 hover:text-white truncate transition duration-150 p-2"
+                                <a class="block p-2 truncate transition duration-150 text-slate-200 hover:text-white"
                                     :class="$page.url.split('/')[2] === getUrlPathName(route.submenu[0].url).split('/')[2] && 'hover:text-slate-200'"
                                     @click.prevent="parentLink.handleClick()">
                                     <div class="flex items-center justify-between">
@@ -134,11 +134,12 @@ watch(sidebarExpanded, () => {
                                                 :isActive="$page.url.split('/')[2] === getUrlPathName(route.submenu[0].url).split('/')[2]">
                                             </component>
                                             <span
-                                                class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">{{ route.text }}</span>
+                                                class="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">{{ route.text }}
+                                            </span>
                                         </div>
                                         <!-- Icon -->
-                                        <div class="flex shrink-0 ml-2">
-                                            <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
+                                        <div class="flex ml-2 shrink-0">
+                                            <svg class="w-3 h-3 ml-1 fill-current shrink-0 text-slate-400"
                                                 :class="parentLink.expanded && 'transform rotate-180'"
                                                 viewBox="0 0 12 12">
                                                 <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
@@ -151,10 +152,10 @@ watch(sidebarExpanded, () => {
                                         <div v-for="(item, index) in route.submenu" :key="index" class="last:pb-2">
                                             <Link :href="item.url">
                                             <li>
-                                                <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate"
+                                                <a class="block truncate transition duration-150 text-slate-400 hover:text-slate-200"
                                                     :class="($page.url.split('/')[3] === getUrlPathName(item.url).split('/')[3] && $page.url.split('/')[2] === getUrlPathName(route.submenu[0].url).split('/')[2]) && '!text-blue-500'">
                                                     <span
-                                                        class="text-sm font-medium ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">{{
+                                                        class="ml-2 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">{{
                                                         item.text }}</span>
                                                 </a>
                                             </li>

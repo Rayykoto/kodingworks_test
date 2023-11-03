@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\Task\TaskController;
 use App\Http\Controllers\User\UserController;
 use App\Models\User;
 
@@ -53,6 +54,15 @@ Route::prefix('admin')->group(function () {
             Route::get('/dashboard', 'index')->name('dashboard.index');
             Route::resource('/users', UserController::class);
             Route::resource('/roles', RoleController::class);
+        });
+
+        Route::controller(TaskController::class)->group(function () {
+            Route::get('/task', 'index')->name('task.index');
+            Route::get('/task/create', 'create')->name('task.create');
+            Route::post('/task', 'store')->name('task.store');
+            Route::get('/task/{id}/edit', 'edit')->name('task.edit');
+            Route::put('/task/{id}', 'update')->name('task.update');
+            Route::delete('task/{id}', 'destroy')->name('task.destroy');
         });
 
         require __DIR__ . '/admin/settings.php';

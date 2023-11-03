@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Task;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
 use App\Models\User;
+use App\Notifications\AssignTask;
+use Illuminate\Support\Facades\Notification as FacadesNotification;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -28,14 +30,32 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        Task::create([
+        $receivertask = User::where('id', $request->user_id)->first();
+        $id_task = new Task;
+        $id_task::create([
             'user_id' => $request->user_id,
             'title' => $request->title,
             'description' => $request->description,
             'status' => $request->status
         ]);
 
+        $this->send_to_user($receivertask, $id_task);
         return redirect()->route('task.index');
+    }
+
+    function send_to_user($receivertask, $tasks)
+    {
+        $task = [
+            'mail_to'   => $receivertask->email,
+            'title'     => 'title tes',
+            'greeting'  => 'ada task nih',
+            'detail'    => 'for what???',
+            'body'      => 'isi data taks',
+            'actionURL' => url('http://kotonotes.com/' . $tasks->id),
+            'actionText' => 'View Taksk',
+            'id' => $tasks->id
+        ];
+        FacadesNotification::send($receivertask, new AssignTask($task));
     }
 
     public function edit($id)

@@ -47,6 +47,24 @@ class GetSidebarMenuAction
                         'can'  => ['view_systems_role_management']
                     ]
                 ],
+            ],
+            [
+                'text' => "Users",
+                'icon' => 'VEmployee',
+                'url'  => route('users.index'),
+                'can' => ['view_user_managementt'],
+            ],
+            [
+                'text' => "Roles",
+                'icon' => 'VSetting',
+                'url' => route('roles.index'),
+                'can' => ['view_role_management']
+            ],
+            [
+                'text' => "Task",
+                'icon' => 'VTask',
+                'url' => route('task.index'),
+                'can' => ['view_role_management']
             ]
         ];
     }

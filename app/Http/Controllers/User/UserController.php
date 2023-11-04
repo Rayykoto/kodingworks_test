@@ -52,7 +52,7 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        return back();
+        return redirect()->route('users.index');
     }
 
     /**

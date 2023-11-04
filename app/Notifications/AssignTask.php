@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 
-class AssignTask extends Notification
+class AssignTask extends Notification implements ShouldQueue
 {
     use Queueable;
 

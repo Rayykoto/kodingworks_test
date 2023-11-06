@@ -1,13 +1,26 @@
 <script>
+import { Head, Link } from '@inertiajs/inertia-vue3';
 import AppLayout from '@/layouts/apps.vue';
 import { Inertia } from '@inertiajs/inertia'; 
 import { reactive } from 'vue';
+import VBreadcrumb from '@/components/VBreadcrumb/index.vue'
+import VInput from "@/components/VInput/index.vue"
+import VButton from '@/components/VButton/index.vue';
 export default {
     layout: AppLayout,
 
     props: {
         user: Object
     },
+
+    components : {
+    Head,
+    Link,
+    VBreadcrumb,
+    VInput,
+    VButton,
+    Head
+},
 
     setup(props) {
             const form = reactive({
@@ -36,51 +49,47 @@ export default {
 </script>
 
 <template>
-    <div class="pb-20">
-        <div class="container grid grid-cols-1 p-5 mx-auto sm:w-full md:w-10/12">
-            <form @submit.prevent="update">
-                <div class="p-5 bg-white rounded-md shadow-md">
-                    <div class="text-xl">
-                        Add users
+    <Head>Edit Users</Head>
+    <VBreadcrumb :routes="breadcrumb" />
+    <div class="flex items-center justify-start mb-4 space-x-2 sm:mb-6">
+        <h1 class="text-2xl font-bold md:text-3xl text-slate-800">Edit User</h1>
+    </div>
+    <div class="bg-white border rounded-sm shadow-lg border-slate-200">
+        <div class="p-6 space-y-6">
+            <section>
+                <div class="flex space-x-5">
+                    <div class="w-1/2">
+                        <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Name</h3>
+                        <div class="mb-4 text-sm text-slate-500">Input your name</div>
+                        <VInput placeholder="Insert Name" label="Name" :required="true" v-model="form.name" />
                     </div>
-                    <div class="mt-3 mb-2 border-2 border-gray-200"></div>
-
-                    <div class="mb-2">
-                        <label class="mt-2">Nama Lengkap</label>
-                        <input type="text" v-model="form.name"
-                            class="w-full p-5 mt-2 placeholder-gray-600 bg-gray-200 border border-gray-200 rounded shadow-sm appearance-none h-7 focus:outline-none focus:placeholder-gray-600 focus:bg-white focus-within:text-gray-600"
-                            placeholder="Nama Lengkap">
+                    <div class="w-1/2">
+                        <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Email</h3>
+                        <div class="mb-4 text-sm text-slate-500">Input your email</div>
+                        <VInput placeholder="Insert Email" label="Email" :required="true" v-model="form.email" />
                     </div>
-
-                    <div class="mb-2">
-                        <label class="mt-2">Alamat Email</label>
-                        <input type="email" v-model="form.email"
-                            class="w-full p-5 mt-2 placeholder-gray-600 bg-gray-200 border border-gray-200 rounded shadow-sm appearance-none h-7 focus:outline-none focus:placeholder-gray-600 focus:bg-white focus-within:text-gray-600"
-                            placeholder="Alamat Email">
-                    </div>
-
-                    <div class="mb-5 cols-span-1">
-                        <label class="mt-2">Password</label>
-                        <input type="password" v-model="form.password"
-                            class="w-full p-5 mt-2 placeholder-gray-600 bg-gray-200 border border-gray-200 rounded shadow-sm appearance-none h-7 focus:outline-none focus:placeholder-gray-600 focus:bg-white focus-within:text-gray-600"
-                            placeholder="Password">
-                    </div>
-
-                    <div class="mb-5 cols-span-1">
-                        <label class="mt-2">Konfirmasi Password</label>
-                        <input type="password" v-model="form.password_confirmation"
-                            class="w-full p-5 mt-2 placeholder-gray-600 bg-gray-200 border border-gray-200 rounded shadow-sm appearance-none h-7 focus:outline-none focus:placeholder-gray-600 focus:bg-white focus-within:text-gray-600"
-                            placeholder="Konfirmasi Password">
-                    </div>
-
-                    <div>
-                        <button
-                            class="inline-block w-full px-3 py-1 text-xl text-white bg-gray-700 rounded-md shadow-md focus:outline-none focus:bg-gray-900">Update
-                        </button>
-                    </div>
-
                 </div>
-            </form>
+                <div class="flex space-x-5">
+                    <div class="w-1/2 pt-5">
+                        <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Password</h3>
+                        <div class="mb-4 text-sm text-slate-500">Input your password</div>
+                        <VInput type="password" placeholder="Insert password" label="Password" :required="true" v-model="form.password" />
+                    </div>
+                    <div class="w-1/2 pt-5">
+                        <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Confirmation Password</h3>
+                        <div class="mb-4 text-sm text-slate-500">Repeat your password</div>
+                        <VInput type="password" placeholder="Insert Repeat Password" label="Repeat Password" :required="true" v-model="form.password_confirmation" />
+                    </div>
+                </div>
+            </section>
+            <footer>
+                <div class="flex flex-col px-6 py-3 border-t border-slate-200">
+                    <div class="flex self-end space-x-3">
+                        <VButton label="Discard" type="default" @click="discard" />
+                        <VButton label="Save" type="primary" @click="update" />
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 </template>

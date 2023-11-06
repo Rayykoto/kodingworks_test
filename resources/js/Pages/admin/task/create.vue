@@ -1,7 +1,7 @@
 <script>
 import AppLayout from '@/layouts/apps.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
-import { reactive } from 'vue';
+import { computed, reactive, ref, toRefs } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import VBreadcrumb from '@/components/VBreadcrumb/index.vue'
 import VInput from "@/components/VInput/index.vue"
@@ -22,13 +22,24 @@ export default {
         users: Array
     },
 
-        setup() {
+        setup(props) {
+            // console.log(props.users);
             const form = reactive({
                 title: '',
                 description: '',
                 status: '',
                 user_id: ''
             });
+
+            const { users } = toRefs(props);
+            const userOptions = computed(() => {
+                return users.value.map(user => ({
+                    value: user.id,
+                    label: user.name
+                }));
+            });
+            
+            const statusTask = ref(['draft', 'on_progress', 'done']);
 
             const breadcrumb = [
             {
@@ -55,6 +66,8 @@ export default {
             return {
                 form,
                 breadcrumb,
+                statusTask,
+                userOptions,
                 submit,
             };
         }
@@ -86,15 +99,12 @@ export default {
                     <div class="w-1/2 pt-5">
                         <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Status</h3>
                         <div class="mb-4 text-sm text-slate-500">Input status</div>
-                        <VSelect type="select" placeholder="Insert status" label="Status" :required="true" v-model="form.status" />
+                        <VSelect placeholder="Insert status" label="Status" :required="true" v-model="form.status" :options="statusTask" />
                     </div>
                     <div class="w-1/2 pt-5">
                         <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Assign</h3>
                         <div class="mb-4 text-sm text-slate-500">Assign to user</div>
-                        <VSelect type="select" placeholder="Insert user" label="Assign" :required="true" v-model="form.user_id">
-                            <option selected disabled>Choose One</option>
-                            <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }}</option>
-                        </VSelect>
+                        <VSelect placeholder="Select a user" label="Assign" :required="true" v-model="form.user_id" :options="userOptions" />
                     </div>
                 </div>
             </section>

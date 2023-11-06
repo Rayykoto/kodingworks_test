@@ -58,12 +58,19 @@ export default {
                         <div class="mb-4 text-sm text-slate-500">Input your name</div>
                         <VInput placeholder="Insert Name" label="Name" :required="true" v-model="form.name" />
                     </div>
-                    <div class="w-full">
+                    <br>
+                    <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Permissions</h3>
+                    <div class="flex items-center" v-for="(permission, index) in permissions" :key="index">
+                        <input class="rounded form-check-input" type="checkbox" v-model="form.permissions" :value="permission.name" :id="`check-${permission.id}`">
+                        <label class="ml-2 text-black" :for="`check-${permission.id}`">{{ permission.name }}</label>
+                    </div>
+                    <!-- belum paham menggunakan VCheckbox-->
+                    <!-- <div class="w-full mt-5">
                         <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Permissions</h3>
                         <div v-for="(permission, index) in permissions" :key="index" class="mb-4 text-sm text-slate-500">
-                            <VCheckbox placeholder="Insert Name" :label="permission.name" :required="true" v-model="form.permissions"  />
+                            <VCheckbox :modelValue="permission.checked" placeholder="Insert Name" :label="permission.name" :required="true" v-model="form.permissions"/>
                        </div>
-                    </div>
+                    </div> -->
             </section>
             <footer>
                 <div class="flex flex-col px-6 py-3 border-t border-slate-200">

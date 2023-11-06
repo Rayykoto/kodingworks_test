@@ -2,6 +2,10 @@
 import AppLayout from '@/layouts/apps.vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link } from '@inertiajs/inertia-vue3';
+import VBreadcrumb from '@/components/VBreadcrumb/index.vue';
+import VButton from '@/components/VButton/index.vue';
+import VDataTable from '@/components/VDataTable/index.vue';
+import VDropdownEditMenu from '@/components/VDropdownEditMenu/index.vue';
 
 export default {
     layout: AppLayout,
@@ -10,9 +14,33 @@ export default {
     },
     components: { 
         Link, 
-        Head 
+        Head ,
+        VBreadcrumb,
+        VButton,
+        VDataTable,
+        VDropdownEditMenu
     },
     setup() {
+
+        const heads = ["Title", "Description", "Status", "Assign", ""];
+
+        const breadcrumb = [
+            {
+                name: "Dashboard",
+                active: false,
+                to: route('dashboard.index')
+            },
+            {
+                name: "Tasks",
+                active: false,
+                to: route('task.index')
+            },
+        ];
+
+        const handleAddTask = () => {
+            Inertia.visit(route('task.create'));
+        }
+
         const deleteItem = (id) => {
             Inertia.delete(`/admin/task/${id}`);
         };
@@ -23,6 +51,9 @@ export default {
             }
         };
         return {
+            heads,
+            breadcrumb,
+            handleAddTask,
             destroy
         }
     },
@@ -30,50 +61,47 @@ export default {
 </script>
 
 <template>
-   <Head>
+    <Head>
         <title>Tasks</title>
     </Head>
-    <div class="pb-20">
-        <div class="container grid grid-cols-1 p-5 mx-auto sm:w-full md:w-10/12">
-            <div class="flex justify-end mb-2">
-                <Link href="/admin/task/create" class="px-4 py-3 text-xs text-white bg-indigo-600 rounded shadow-sm focus:outline-none">Create</Link>
-            </div>
-            <div class="p-5 bg-white rounded-md shadow-md">
-                <table class="min-w-full table-auto">
-                    <thead class="justify-between">
-                        <tr class="w-full bg-gray-600">
-                            <th class="px-16 py-2">
-                                <span class="text-white">Title</span>
-                            </th>
-                            <th class="px-16 py-2">
-                                <span class="text-white">Description</span>
-                            </th>
-                            <th class="px-16 py-2">
-                                <span class="text-white">Status</span>
-                            </th>
-                            <th class="px-16 py-2">
-                                <span class="text-white">Assign</span>
-                            </th>
-                            <th class="px-16 py-2">
-                                <span class="text-white">Action</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-gray-200">
-                       <tr v-for="(task, index) in tasks" :key="index" class="bg-white border">
-                            <td class="justify-center px-16 py-2">{{ task.title }}</td>
-                            <td class="justify-center px-16 py-2">{{ task.description }}</td>
-                            <td class="justify-center px-16 py-2">{{ task.status }}</td>
-                            <td v-if="task.user == null" class="justify-center px-16 py-2">-</td>
-                            <td v-else class="justify-center px-16 py-2">{{ task.user.name }}</td>
-                            <td class="flex gap-2 px-10 py-3 text-center">
-                                <Link :href="`/admin/task/${task.id}/edit`" class="px-4 py-2 text-xs text-white bg-indigo-600 rounded shadow-sm focus:outline-none">Edit</Link>
-                                <button @click.prevent="destroy(task.id)" class="px-4 py-2 text-xs text-white bg-red-600 rounded shadow-sm focus:outline-none"><i class="fa fa-trash"></i> Delete</button>
-                            </td>
-                       </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <VBreadcrumb :routes="breadcrumb" />
+
+    <div class="flex items-center justify-between mb-4 sm:mb-6">
+        <h1 class="text-2xl font-bold md:text-3xl text-slate-800">Tasks</h1>
     </div>
+
+    <div class="bg-white border rounded-sm shadow-lg border-slate-200"
+            :class="isLoading && 'min-h-[40vh] sm:min-h-[50vh]'">
+            <header class="items-center justify-between block px-4 py-6 sm:flex">
+                <h2 class="font-semibold text-slate-800">
+                    All Tasks <span class="text-slate-400 !font-medium ml"></span>
+                </h2>
+                <div class="flex justify-end mt-3 space-x-2 sm:mt-0 sm:justify-between">
+                    <VButton label="Add Task" type="primary" @click="handleAddTask"/>
+                </div>
+            </header>
+
+            <VDataTable :heads="heads" :isLoading="isLoading">
+                <tr v-for="(data, index) in tasks" :key="index" >
+                    <td class="h-16 px-4 whitespace-nowrap"> {{ data.title }}</td>
+                    <td class="h-16 px-4 whitespace-nowrap"> {{ data.title }}</td>
+                    <td class="h-16 px-4 whitespace-nowrap"> {{ data.title }}</td>
+                    <td class="h-16 px-4 whitespace-nowrap"> {{ data.title }}</td>
+                    <td class="h-16 px-4 text-right whitespace-nowrap">
+                        <VDropdownEditMenu class="relative inline-flex r-0" :align="'right'"
+                            :last="index === tasks.length - 1 ? true : false">
+                            <Link :href="`/admin/task/${data.id}/edit`" class="flex items-center p-3 cursor-pointer hover:bg-slate-100">Edit</Link>
+                            <li class="cursor-pointer hover:bg-slate-100" @click="destroy(data.id)">
+                                <div class="flex items-center p-3">
+                                    <span>
+                                        <VTrash color="danger" />
+                                    </span>
+                                    <span>Delete Tasks</span>
+                                </div>
+                            </li>
+                        </VDropdownEditMenu>
+                    </td>
+                </tr>
+            </VDataTable>
+        </div>
 </template>

@@ -68,6 +68,9 @@ https://documenter.getpostman.com/view/17101573/2s9YXe8Q1M
 https://documenter.getpostman.com/view/17101573/2s9YXe8Q1J
 
 ## Video Demo Task
+Loom pertama:
 https://www.loom.com/share/da4983c82f9e41f1b65b9b4d23bb2c10?sid=51251fba-55ed-4ee4-b4f4-00044f2e6d79
+Loom kedua (revisi):
+https://www.loom.com/share/1100e14cb2fc4ad18b04a763daf5e75e?sid=1c76607d-1201-40b7-9c99-8adf09be83a2
 
 ## Mulai Mengerjakan 3 November 2023, 01.00 PM.

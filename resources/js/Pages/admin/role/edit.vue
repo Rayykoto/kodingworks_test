@@ -1,9 +1,23 @@
 <script>
 import AppLayout from '@/layouts/apps.vue';
+import { Head, Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia'; 
 import { reactive } from 'vue';
+import VBreadcrumb from '@/components/VBreadcrumb/index.vue'
+import VInput from "@/components/VInput/index.vue"
+import VButton from '@/components/VButton/index.vue';
+import VCheckbox from '@/components/VCheckbox/index.vue';
 export default {
     layout: AppLayout,
+
+    components: {
+        Head,
+        Link,
+        VBreadcrumb,
+        VInput,
+        VButton,
+        VCheckbox
+    },
 
     props: {
         permissions: Array,
@@ -33,40 +47,34 @@ export default {
 </script>
 
 <template>
-    <div class="pb-20">
-        <div class="container grid grid-cols-1 p-5 mx-auto sm:w-full md:w-10/12">
-            <form @submit.prevent="update">
-                <div class="p-5 bg-white rounded-md shadow-md">
-                    <div class="text-xl">
-                        Edit Role
+    <Head>Edit Role</Head>
+    <VBreadcrumb :routes="breadcrumb" />
+    <div class="flex items-center justify-start mb-4 space-x-2 sm:mb-6">
+        <h1 class="text-2xl font-bold md:text-3xl text-slate-800">Edit Role</h1>
+    </div>
+    <div class="bg-white border rounded-sm shadow-lg border-slate-200">
+        <div class="p-6 space-y-6">
+            <section>
+                    <div class="w-full">
+                        <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Name</h3>
+                        <div class="mb-4 text-sm text-slate-500">Input your name</div>
+                        <VInput placeholder="Insert Name" label="Name" :required="true" v-model="form.name" />
                     </div>
-                    <div class="mt-3 mb-2 border-2 border-gray-200"></div>
-
-                    <div class="mb-2">
-                        <label class="mt-2">Nama Lengkap</label>
-                        <input type="text" v-model="form.name"
-                            class="w-full p-5 mt-2 placeholder-gray-600 bg-gray-200 border border-gray-200 rounded shadow-sm appearance-none h-7 focus:outline-none focus:placeholder-gray-600 focus:bg-white focus-within:text-gray-600"
-                            placeholder="Nama Lengkap">
+                    <div class="w-full">
+                        <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Permissions</h3>
+                        <div v-for="(permission, index) in permissions" :key="index" class="mb-4 text-sm text-slate-500">
+                            <VCheckbox placeholder="Insert Name" :id="`check-${permission.id}`" :label="permission.name" :required="true" v-model="form.permissions"  />
+                       </div>
                     </div>
-
-                    <hr>
-                        <div class="mb-3">
-                                <label class="flex items-center space-x-2">Permissions</label>
-                                <br>
-                                <div v-for="(permission, index) in permissions" :key="index">
-                                    <input type="checkbox" class="w-5 h-5 text-indigo-600 form-checkbox" v-model="form.permissions" :value="permission.name" :id="`check-${permission.id}`">
-                                    <label class="text-gray-700" :for="`check-${permission.id}`">{{ permission.name }}</label>
-                                </div>
-                            </div>
-                        <div>
-                        
-                        <button
-                            class="inline-block w-full px-3 py-1 text-xl text-white bg-gray-700 rounded-md shadow-md focus:outline-none focus:bg-gray-900">Update
-                        </button>
+            </section>
+            <footer>
+                <div class="flex flex-col px-6 py-3 border-t border-slate-200">
+                    <div class="flex self-end space-x-3">
+                        <VButton label="Discard" type="default" @click="discard" />
+                        <VButton label="Save" type="primary" @click="update" />
                     </div>
-
                 </div>
-            </form>
+            </footer>
         </div>
     </div>
 </template>

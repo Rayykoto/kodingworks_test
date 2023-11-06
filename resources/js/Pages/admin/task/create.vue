@@ -1,16 +1,21 @@
 <script>
 import AppLayout from '@/layouts/apps.vue';
-
 import { Head, Link } from '@inertiajs/inertia-vue3';
-
 import { reactive } from 'vue';
-
 import { Inertia } from '@inertiajs/inertia';
+import VBreadcrumb from '@/components/VBreadcrumb/index.vue'
+import VInput from "@/components/VInput/index.vue"
+import VButton from '@/components/VButton/index.vue';
+import VSelect from '@/components/VSelect/index.vue';
 export default {
     layout: AppLayout,
     components: {
             Head,
-            Link
+            Link,
+            VBreadcrumb,
+            VInput,
+            VButton,
+            VSelect
         },
 
     props: {
@@ -25,6 +30,19 @@ export default {
                 user_id: ''
             });
 
+            const breadcrumb = [
+            {
+                name: "Tasks",
+                active: false,
+                to: route('task.index')
+            },
+            {
+                name: "Add Task",
+                active: false,
+                to: route('task.create')
+            },
+        ];
+
             const submit = () => {
                 Inertia.post('/admin/task', {
                     title: form.title,
@@ -36,6 +54,7 @@ export default {
             
             return {
                 form,
+                breadcrumb,
                 submit,
             };
         }
@@ -43,65 +62,50 @@ export default {
 </script>
 
 <template>
-    <div class="pb-20">
-        <div class="container grid grid-cols-1 p-5 mx-auto sm:w-full md:w-10/12">
-
-            <form @submit.prevent="submit">
-                <div class="p-5 bg-white rounded-md shadow-md">
-                    <div class="text-xl">
-                        Add task
+     <Head>Add Task</Head>
+    <VBreadcrumb :routes="breadcrumb" />
+    <div class="flex items-center justify-start mb-4 space-x-2 sm:mb-6">
+        <h1 class="text-2xl font-bold md:text-3xl text-slate-800">Add Task</h1>
+    </div>
+    <div class="bg-white border rounded-sm shadow-lg border-slate-200">
+        <div class="p-6 space-y-6">
+            <section>
+                <div class="flex space-x-5">
+                    <div class="w-1/2">
+                        <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Title</h3>
+                        <div class="mb-4 text-sm text-slate-500">Input your title</div>
+                        <VInput placeholder="Insert Title" label="Title" :required="true" v-model="form.title" />
                     </div>
-                    <div class="mt-3 mb-2 border-2 border-gray-200"></div>
-
-                    <div class="mb-2">
-                        <label class="mt-2">Title</label>
-                        <input type="text" v-model="form.title"
-                            class="w-full p-5 mt-2 placeholder-gray-600 bg-gray-200 border border-gray-200 rounded shadow-sm appearance-none h-7 focus:outline-none focus:placeholder-gray-600 focus:bg-white focus-within:text-gray-600"
-                            placeholder="Title">
+                    <div class="w-1/2">
+                        <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Description</h3>
+                        <div class="mb-4 text-sm text-slate-500">Input your email</div>
+                        <VInput type="text" placeholder="Insert Description" label="Description" :required="true" v-model="form.description" />
                     </div>
-
-                    <div class="mb-2">
-                        <label class="mt-2">Descripton</label>
-                        <textarea
-                            v-model="form.description"
-                            class="w-full p-5 mt-2 placeholder-gray-600 bg-gray-200 border border-gray-200 rounded shadow-sm appearance-none focus:outline-none focus:placeholder-gray-600 focus:bg-white focus-within:text-gray-600"
-                            placeholder="Description"
-                            type="textarea"
-                            rows="4"
-                        ></textarea>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="mb-5 cols-span-1">
-                            <label class="mt-2">Status</label>
-                            <select 
-                                v-model="form.status" class="inline-block w-full px-3 py-1 text-xl rounded-md">
-                                <option selected disabled>
-                                    Choose One
-                                </option>
-                                <option value="draft">Draft</option>
-                                <option value="on_progress">On Progress</option>
-                                <option value="done">Done</option>
-                            </select>
-                        </div>
-                        
-                        <div class="mb-5 cols-span-1">
-                            <label class="mt-2">Assign</label>
-                            <select v-model="form.user_id" class="inline-block w-full px-3 py-1 text-xl rounded-md">
-                                <option selected disabled>Choose One</option>
-                                <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }}</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <button
-                            class="inline-block w-full px-3 py-1 text-xl text-white bg-gray-700 rounded-md shadow-md focus:outline-none focus:bg-gray-900">Save
-                        </button>
-                    </div>
-
                 </div>
-            </form>
+                <div class="flex space-x-5">
+                    <div class="w-1/2 pt-5">
+                        <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Status</h3>
+                        <div class="mb-4 text-sm text-slate-500">Input status</div>
+                        <VSelect type="select" placeholder="Insert status" label="Status" :required="true" v-model="form.status" />
+                    </div>
+                    <div class="w-1/2 pt-5">
+                        <h3 class="mb-1 text-xl font-bold leading-snug text-slate-800">Assign</h3>
+                        <div class="mb-4 text-sm text-slate-500">Assign to user</div>
+                        <VSelect type="select" placeholder="Insert user" label="Assign" :required="true" v-model="form.user_id">
+                            <option selected disabled>Choose One</option>
+                            <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }}</option>
+                        </VSelect>
+                    </div>
+                </div>
+            </section>
+            <footer>
+                <div class="flex flex-col px-6 py-3 border-t border-slate-200">
+                    <div class="flex self-end space-x-3">
+                        <VButton label="Discard" type="default" @click="discard" />
+                        <VButton label="Save" type="primary" @click="submit" />
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 </template>

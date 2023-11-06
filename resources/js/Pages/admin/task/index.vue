@@ -20,8 +20,8 @@ export default {
         VDataTable,
         VDropdownEditMenu
     },
-    setup() {
-
+    setup(props) {
+        console.log(props);
         const heads = ["Title", "Description", "Status", "Assign", ""];
 
         const breadcrumb = [
@@ -84,9 +84,9 @@ export default {
             <VDataTable :heads="heads" :isLoading="isLoading">
                 <tr v-for="(data, index) in tasks" :key="index" >
                     <td class="h-16 px-4 whitespace-nowrap"> {{ data.title }}</td>
-                    <td class="h-16 px-4 whitespace-nowrap"> {{ data.title }}</td>
-                    <td class="h-16 px-4 whitespace-nowrap"> {{ data.title }}</td>
-                    <td class="h-16 px-4 whitespace-nowrap"> {{ data.title }}</td>
+                    <td class="h-16 px-4 whitespace-nowrap"> {{ data.description }}</td>
+                    <td class="h-16 px-4 whitespace-nowrap"> {{ data.status }}</td>
+                    <td class="h-16 px-4 whitespace-nowrap"> {{ data.user.name }}</td>
                     <td class="h-16 px-4 text-right whitespace-nowrap">
                         <VDropdownEditMenu class="relative inline-flex r-0" :align="'right'"
                             :last="index === tasks.length - 1 ? true : false">
